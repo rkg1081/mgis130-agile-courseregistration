@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(135deg, #F36E21 0%, #D14905 100%);
+    color: white;
+    padding: 2rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Filter Section */
+.filter-section {
+    background: white;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-section label {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+#departmentFilter {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 250px;
+    transition: border-color 0.3s;
+}
+
+#departmentFilter:hover {
+    border-color: #F36E21;
+}
+
+#departmentFilter:focus {
+    outline: none;
+    border-color: #F36E21;
+}
+
+.course-count {
+    margin-left: auto;
+    font-weight: 600;
+    color: #666;
+}
+
+/* Course Grid */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+/* Course Card */
+.course-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid #F36E21;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.course-header {
+    margin-bottom: 1rem;
+}
+
+.course-code {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #F36E21;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.course-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #222;
+    margin: 0.5rem 0;
+}
+
+.course-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.meta-item strong {
+    color: #333;
+}
+
+.department-tag {
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.course-description {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.course-details {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.detail-row {
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #333;
+    min-width: 100px;
+}
+
+.detail-value {
+    color: #666;
+}
+
+.terms {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.term-badge {
+    background-color: #F36E21;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.prerequisites {
+    color: #666;
+}
+
+.no-prereq {
+    color: #999;
+    font-style: italic;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.no-results h2 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.no-results p {
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    #departmentFilter {
+        width: 100%;
+    }
+    
+    .course-count {
+        margin-left: 0;
+        text-align: center;
+    }
+}
