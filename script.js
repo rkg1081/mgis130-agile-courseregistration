@@ -1,10 +1,13 @@
 // Global variables
 let allCourses = [];
 let currentFilter = 'all';
+let mySchedule = [];
 
 // Load courses when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    loadScheduleFromStorage();
     loadCourses();
+    initializeSchedulePanel();
 });
 
 // Load course data from JSON file
@@ -91,6 +94,10 @@ function createCourseCard(course) {
         `<span class="term-badge">${term}</span>`
     ).join('');
     
+    const isInSchedule = mySchedule.some(c => c.id === course.id);
+    const buttonText = isInSchedule ? 'Added to Schedule' : 'Add to Schedule';
+    const buttonClass = isInSchedule ? 'add-to-schedule-btn added' : 'add-to-schedule-btn';
+    
     return `
         <div class="course-card">
             <div class="course-header">
@@ -120,6 +127,10 @@ function createCourseCard(course) {
                     <span class="prerequisites">${prerequisitesHTML}</span>
                 </div>
             </div>
+            
+            <button class="${buttonClass}" data-course-id="${course.id}" onclick="toggleCourseInSchedule('${course.id}')">
+                ${buttonText}
+            </button>
         </div>
     `;
 }
@@ -129,4 +140,136 @@ function updateCourseCount(count) {
     const countElement = document.getElementById('courseCount');
     const courseText = count === 1 ? 'course' : 'courses';
     countElement.textContent = `Showing ${count} ${courseText}`;
+}
+
+// ===== SCHEDULE MANAGEMENT FUNCTIONS =====
+
+// Initialize schedule panel event listeners
+function initializeSchedulePanel() {
+    const toggleBtn = document.getElementById('toggleSchedule');
+    const closeBtn = document.getElementById('closeSchedule');
+    const clearBtn = document.getElementById('clearSchedule');
+    const schedulePanel = document.getElementById('schedulePanel');
+    
+    toggleBtn.addEventListener('click', () => {
+        schedulePanel.classList.toggle('hidden');
+    });
+    
+    closeBtn.addEventListener('click', () => {
+        schedulePanel.classList.add('hidden');
+    });
+    
+    clearBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear your entire schedule?')) {
+            clearSchedule();
+        }
+    });
+    
+    updateScheduleDisplay();
+}
+
+// Toggle course in schedule
+function toggleCourseInSchedule(courseId) {
+    const course = allCourses.find(c => c.id === courseId);
+    if (!course) return;
+    
+    const index = mySchedule.findIndex(c => c.id === courseId);
+    
+    if (index > -1) {
+        // Remove from schedule
+        mySchedule.splice(index, 1);
+    } else {
+        // Add to schedule
+        mySchedule.push(course);
+    }
+    
+    saveScheduleToStorage();
+    updateScheduleDisplay();
+    
+    // Refresh course cards to update button states
+    filterCourses();
+}
+
+// Remove course from schedule
+function removeCourseFromSchedule(courseId) {
+    mySchedule = mySchedule.filter(c => c.id !== courseId);
+    saveScheduleToStorage();
+    updateScheduleDisplay();
+    filterCourses();
+}
+
+// Clear entire schedule
+function clearSchedule() {
+    mySchedule = [];
+    saveScheduleToStorage();
+    updateScheduleDisplay();
+    filterCourses();
+}
+
+// Update schedule panel display
+function updateScheduleDisplay() {
+    const scheduleContent = document.getElementById('scheduleContent');
+    const scheduleCountElement = document.getElementById('scheduleCount');
+    const totalCreditsElement = document.getElementById('totalCredits');
+    const totalCoursesElement = document.getElementById('totalCourses');
+    const clearBtn = document.getElementById('clearSchedule');
+    
+    // Update count badge
+    scheduleCountElement.textContent = mySchedule.length;
+    
+    // Calculate total credits
+    const totalCredits = mySchedule.reduce((sum, course) => sum + course.credits, 0);
+    totalCreditsElement.textContent = totalCredits;
+    totalCoursesElement.textContent = mySchedule.length;
+    
+    // Enable/disable clear button
+    clearBtn.disabled = mySchedule.length === 0;
+    
+    // Display schedule items
+    if (mySchedule.length === 0) {
+        scheduleContent.innerHTML = `
+            <div class="empty-schedule">
+                <p>Your schedule is empty. Add courses to get started!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const scheduleHTML = mySchedule.map(course => createScheduleItem(course)).join('');
+    scheduleContent.innerHTML = scheduleHTML;
+}
+
+// Create HTML for schedule item
+function createScheduleItem(course) {
+    const termsHTML = course.terms.join(', ');
+    
+    return `
+        <div class="schedule-item">
+            <div class="schedule-item-header">
+                <div>
+                    <div class="schedule-item-code">${course.courseCode}</div>
+                    <div class="schedule-item-title">${course.title}</div>
+                </div>
+                <button class="remove-btn" onclick="removeCourseFromSchedule('${course.id}')">
+                    Remove
+                </button>
+            </div>
+            <div class="schedule-item-info">
+                ${course.credits} credits • ${termsHTML}
+            </div>
+        </div>
+    `;
+}
+
+// Save schedule to localStorage
+function saveScheduleToStorage() {
+    localStorage.setItem('mySchedule', JSON.stringify(mySchedule));
+}
+
+// Load schedule from localStorage
+function loadScheduleFromStorage() {
+    const savedSchedule = localStorage.getItem('mySchedule');
+    if (savedSchedule) {
+        mySchedule = JSON.parse(savedSchedule);
+    }
 }

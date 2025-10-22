@@ -21,6 +21,29 @@
                 <option value="all">All Departments</option>
             </select>
             <span id="courseCount" class="course-count"></span>
+            <button id="toggleSchedule" class="toggle-schedule-btn">
+                View My Schedule (<span id="scheduleCount">0</span>)
+            </button>
+        </div>
+
+        <!-- Schedule Panel -->
+        <div id="schedulePanel" class="schedule-panel hidden">
+            <div class="schedule-header">
+                <h2>My Schedule</h2>
+                <button id="closeSchedule" class="close-btn">&times;</button>
+            </div>
+            <div id="scheduleContent" class="schedule-content">
+                <div class="empty-schedule">
+                    <p>Your schedule is empty. Add courses to get started!</p>
+                </div>
+            </div>
+            <div class="schedule-footer">
+                <div class="schedule-stats">
+                    <span>Total Credits: <strong id="totalCredits">0</strong></span>
+                    <span>Total Courses: <strong id="totalCourses">0</strong></span>
+                </div>
+                <button id="clearSchedule" class="clear-schedule-btn">Clear All</button>
+            </div>
         </div>
 
         <div id="courseList" class="course-grid">
